@@ -6,6 +6,7 @@ import com.willysanych.blog.exception.QuizNotFoundException;
 import com.willysanych.blog.model.Quiz;
 import com.willysanych.blog.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,8 @@ public class QuizService {
         return mapFromQuizToDto(quiz);
     }
 
-    private QuizDto mapFromQuizToDto(Quiz quiz) {
+    @Async
+    QuizDto mapFromQuizToDto(Quiz quiz) {
         QuizDto quizDto = new QuizDto();
         quizDto.setId(quiz.getId());
         quizDto.setFirstQuestion(quiz.getFirstQuestion());
@@ -66,7 +68,8 @@ public class QuizService {
         return quizDto;
     }
 
-    private Quiz mapFromDtoToQuiz(QuizDto quizDto) {
+    @Async
+    Quiz mapFromDtoToQuiz(QuizDto quizDto) {
         Quiz quiz = new Quiz();
         quiz.setFirstQuestion(quizDto.getFirstQuestion());
         quiz.setSecondQuestion(quizDto.getSecondQuestion());

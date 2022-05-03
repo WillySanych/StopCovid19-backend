@@ -7,7 +7,7 @@ import com.willysanych.blog.model.Quiz;
 import com.willysanych.blog.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.userdetails.User;
+import com.willysanych.blog.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

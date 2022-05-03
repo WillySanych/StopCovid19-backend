@@ -3,15 +3,10 @@ package com.willysanych.blog.service;
 import com.willysanych.blog.model.User;
 import com.willysanych.blog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.Collections;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -22,21 +17,22 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         
-         User user =  userRepository.findByUserName(username).orElseThrow(()
+         User user =  userRepository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException("No user found " + username));
+         return user;
         
-        return new org.springframework.security.core.userdetails.User(
-                user.getUserName(),
-                user.getPassword(),
-                true,
-                true,
-                true,
-                true,
-                getAuthorities("ROLE_USER")
-        );
+//        return new org.springframework.security.core.userdetails.User(
+//                user.getUsername(),
+//                user.getPassword(),
+//                true,
+//                true,
+//                true,
+//                true,
+//                Collections.singletonList(Role.USER)
+//        );
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(String role_user) {
-        return Collections.singletonList(new SimpleGrantedAuthority(role_user));
-    }
+//    private Collection<? extends GrantedAuthority> getAuthorities(String role_user) {
+//        return Collections.singletonList(new SimpleGrantedAuthority(role_user));
+//    }
 }

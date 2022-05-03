@@ -4,6 +4,7 @@ import com.willysanych.blog.dto.AuthenticationResponse;
 import com.willysanych.blog.dto.LoginRequest;
 import com.willysanych.blog.dto.RefreshTokenRequest;
 import com.willysanych.blog.dto.RegisterRequest;
+import com.willysanych.blog.model.Role;
 import com.willysanych.blog.model.User;
 import com.willysanych.blog.repository.UserRepository;
 import com.willysanych.blog.security.JwtProvider;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AuthService {
@@ -41,9 +44,13 @@ public class AuthService {
     public void signup(RegisterRequest registerRequest) {
 
         User user = new User();
-        user.setUserName(registerRequest.getUsername());
+        user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(encodePassword(registerRequest.getPassword()));
+        Set<Role> defaultRoles = new HashSet<>();
+        defaultRoles.add(Role.USER);
+        defaultRoles.add(Role.PATIENT);
+        user.setRoles(defaultRoles);
         userRepository.save(user);
     }
 
@@ -57,18 +64,19 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
-//        return new AuthenticationResponse(authenticationToken, loginRequest.getUsername());
+        User user = userRepository.findByUsername(loginRequest.getUsername()).get();
         return AuthenticationResponse.builder()
                 .authenticationToken(authenticationToken)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
+                .roles(user.getRoles())
                 .build();
 
     }
 
-    public Optional<org.springframework.security.core.userdetails.User> getCurrentUser() {
-        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder
+    public Optional<User> getCurrentUser() {
+        User principal = (User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();

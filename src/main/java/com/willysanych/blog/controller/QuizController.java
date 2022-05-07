@@ -17,18 +17,20 @@ public class QuizController {
     @Autowired
     private QuizService quizService;
 
+    @PreAuthorize("hasAuthority('PATIENT')")
     @PostMapping
     public ResponseEntity createQuiz(@RequestBody QuizDto quizDto) {
         quizService.createQuiz(quizDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping("/all")
-    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<List<QuizDto>> showAllQuizzes() {
         return new ResponseEntity<>(quizService.showAllQuizzes(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping("/get/{id}")
     public ResponseEntity<QuizDto> getSingleQuiz(@PathVariable @RequestBody Long id) {
         return new ResponseEntity<>(quizService.readSingleQuiz(id), HttpStatus.OK);

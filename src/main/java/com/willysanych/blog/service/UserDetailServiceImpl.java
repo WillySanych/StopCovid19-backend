@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
@@ -16,11 +18,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        
-         User user =  userRepository.findByUsername(username).orElseThrow(()
+
+        User user = userRepository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException("No user found " + username));
-         return user;
-        
+        return user;
+
 //        return new org.springframework.security.core.userdetails.User(
 //                user.getUsername(),
 //                user.getPassword(),
@@ -32,7 +34,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
 //        );
     }
 
-//    private Collection<? extends GrantedAuthority> getAuthorities(String role_user) {
-//        return Collections.singletonList(new SimpleGrantedAuthority(role_user));
-//    }
+    public List<User> getAllUsers() {
+
+        return userRepository.findAll();
+    }
+
 }

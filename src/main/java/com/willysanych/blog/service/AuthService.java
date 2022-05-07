@@ -1,9 +1,6 @@
 package com.willysanych.blog.service;
 
-import com.willysanych.blog.dto.AuthenticationResponse;
-import com.willysanych.blog.dto.LoginRequest;
-import com.willysanych.blog.dto.RefreshTokenRequest;
-import com.willysanych.blog.dto.RegisterRequest;
+import com.willysanych.blog.dto.*;
 import com.willysanych.blog.model.Role;
 import com.willysanych.blog.model.User;
 import com.willysanych.blog.repository.UserRepository;
@@ -13,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +43,7 @@ public class AuthService {
 
         User user = new User();
         user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
+//        user.setEmail(registerRequest.getEmail());
         user.setPassword(encodePassword(registerRequest.getPassword()));
         Set<Role> defaultRoles = new HashSet<>();
         defaultRoles.add(Role.USER);
@@ -64,7 +62,8 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
-        User user = userRepository.findByUsername(loginRequest.getUsername()).get();
+        User user =  userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()
+                -> new UsernameNotFoundException("No user found " + loginRequest.getUsername()));
         return AuthenticationResponse.builder()
                 .authenticationToken(authenticationToken)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
@@ -86,11 +85,28 @@ public class AuthService {
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
         String token = jwtProvider.generateTokenWithUsername(refreshTokenRequest.getUsername());
+        User user = userRepository.findByUsername(refreshTokenRequest.getUsername()).orElseThrow(()
+                -> new UsernameNotFoundException("No user found " + refreshTokenRequest.getUsername()));
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
                 .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getUsername())
                 .build();
+    }
+
+    public void updateRoles(RolesRequest rolesRequest) {
+
+        String username = rolesRequest.getUsername();
+        Set<Role> roles = rolesRequest.getRoles();
+        System.out.println(roles);
+
+        User user =  userRepository.findByUsername(username).orElseThrow(()
+                -> new UsernameNotFoundException("No user found " + username));
+        user.getRoles().clear();
+        user.getRoles().addAll(roles);
+//        user.setRoles(roles);
+        userRepository.save(user);
+
     }
 }

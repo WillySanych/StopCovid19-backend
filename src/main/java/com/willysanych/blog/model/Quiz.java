@@ -22,11 +22,9 @@ public class Quiz {
     @NotEmpty
     private String username;
 
-    @Lob
     @Column
     private String firstQuestion;
 
-    @Lob
     @Column
     private String secondQuestion;
 
@@ -34,31 +32,24 @@ public class Quiz {
     @Column
     private String thirdQuestion;
 
-    @Lob
     @Column
     private String fourthQuestion;
 
-    @Lob
     @Column
     private String fifthQuestion;
 
-    @Lob
     @Column
     private String sixthQuestion;
 
-    @Lob
     @Column
     private String seventhQuestion;
 
-    @Lob
     @Column
     private String eighthQuestion;
 
-    @Lob
     @Column
     private String ninthQuestion;
 
-    @Lob
     @Column
     private String tenthQuestion;
 
@@ -70,7 +61,6 @@ public class Quiz {
     @Column
     private String twelfthQuestion;
 
-    @Lob
     @Column
     private String thirteenthQuestion;
 

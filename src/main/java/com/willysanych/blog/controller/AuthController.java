@@ -1,10 +1,7 @@
 package com.willysanych.blog.controller;
 
-import com.willysanych.blog.dto.LoginRequest;
-import com.willysanych.blog.dto.RefreshTokenRequest;
-import com.willysanych.blog.dto.RegisterRequest;
+import com.willysanych.blog.dto.*;
 import com.willysanych.blog.service.AuthService;
-import com.willysanych.blog.dto.AuthenticationResponse;
 import com.willysanych.blog.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

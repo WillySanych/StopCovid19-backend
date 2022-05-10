@@ -33,12 +33,6 @@ public class QuizController {
         return quizService.showAllQuizzes(paging);
     }
 
-//    @PreAuthorize("hasAuthority('DOCTOR')")
-//    @GetMapping("/all")
-//    public ResponseEntity<List<QuizDto>> showAllQuizzes() {
-//        return new ResponseEntity<>(quizService.showAllQuizzes(), HttpStatus.OK);
-//    }
-
     @PreAuthorize("hasAuthority('DOCTOR')")
     @GetMapping("/get/{id}")
     public ResponseEntity<QuizDto> getSingleQuiz(@PathVariable @RequestBody Long id) {

@@ -36,14 +36,13 @@ public class AuthService {
     private JwtProvider jwtProvider;
 
     @Autowired
-    private  RefreshTokenService refreshTokenService;
+    private RefreshTokenService refreshTokenService;
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
 
         User user = new User();
         user.setUsername(registerRequest.getUsername());
-//        user.setEmail(registerRequest.getEmail());
         user.setPassword(encodePassword(registerRequest.getPassword()));
         Set<Role> defaultRoles = new HashSet<>();
         defaultRoles.add(Role.USER);
@@ -62,7 +61,7 @@ public class AuthService {
                 loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
-        User user =  userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()
+        User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()
                 -> new UsernameNotFoundException("No user found " + loginRequest.getUsername()));
         return AuthenticationResponse.builder()
                 .authenticationToken(authenticationToken)
@@ -101,11 +100,10 @@ public class AuthService {
         Set<Role> roles = rolesRequest.getRoles();
         System.out.println(roles);
 
-        User user =  userRepository.findByUsername(username).orElseThrow(()
+        User user = userRepository.findByUsername(username).orElseThrow(()
                 -> new UsernameNotFoundException("No user found " + username));
         user.getRoles().clear();
         user.getRoles().addAll(roles);
-//        user.setRoles(roles);
         userRepository.save(user);
 
     }

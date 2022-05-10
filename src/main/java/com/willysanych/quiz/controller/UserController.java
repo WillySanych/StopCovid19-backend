@@ -37,9 +37,4 @@ public class UserController {
         return userDetailService.getAllUsers(paging);
     }
 
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    @GetMapping("/getAllUsers")
-//    public ResponseEntity<List<User>> getAllUsers() {
-//        return new ResponseEntity<>(userDetailService.getAllUsers(), HttpStatus.OK);
-//    }
 }

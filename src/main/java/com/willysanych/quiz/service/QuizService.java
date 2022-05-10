@@ -1,15 +1,14 @@
 package com.willysanych.quiz.service;
 
 import com.willysanych.quiz.dto.QuizDto;
-
 import com.willysanych.quiz.exception.QuizNotFoundException;
 import com.willysanych.quiz.model.Quiz;
+import com.willysanych.quiz.model.User;
 import com.willysanych.quiz.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
-import com.willysanych.quiz.model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +24,9 @@ public class QuizService {
     private QuizRepository quizRepository;
 
     @Transactional
-    public Page<Quiz>showAllQuizzes(Pageable pageable) {
+    public Page<Quiz> showAllQuizzes(Pageable pageable) {
         return quizRepository.findAll(pageable);
     }
-//    @Transactional
-//    public List<QuizDto> showAllQuizzes() {
-//        List<Quiz> quizzes = quizRepository.findAll();
-//        return quizzes.stream().map(this::mapFromQuizToDto).collect(toList());
-//    }
 
     @Transactional
     public void createQuiz(QuizDto quizDto) {

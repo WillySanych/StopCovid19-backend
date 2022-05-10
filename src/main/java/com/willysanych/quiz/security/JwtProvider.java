@@ -1,11 +1,11 @@
 package com.willysanych.quiz.security;
 
 import com.willysanych.quiz.exception.QuizAppException;
+import com.willysanych.quiz.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import com.willysanych.quiz.model.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +26,7 @@ public class JwtProvider {
     private Long jwtExpirationInMillis;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         try {
             keyStore = KeyStore.getInstance("JKS");
             InputStream resourceAsStream = getClass().getResourceAsStream("/quizapp.jks");
@@ -35,6 +35,7 @@ public class JwtProvider {
             throw new QuizAppException("Exception occurred while loading keystore");
         }
     }
+
     public String generateToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
@@ -56,8 +57,8 @@ public class JwtProvider {
 
     private PrivateKey getPrivateKey() {
         try {
-            return (PrivateKey)keyStore.getKey("quizapp", "quizapp".toCharArray());
-        } catch (KeyStoreException |NoSuchAlgorithmException | UnrecoverableKeyException e) {
+            return (PrivateKey) keyStore.getKey("quizapp", "quizapp".toCharArray());
+        } catch (KeyStoreException | NoSuchAlgorithmException | UnrecoverableKeyException e) {
             throw new QuizAppException("Exception occurred while retrieving private key from keystore");
         }
     }

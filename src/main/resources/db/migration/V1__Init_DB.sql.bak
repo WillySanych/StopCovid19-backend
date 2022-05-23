@@ -5,7 +5,7 @@ create table question
 	type_of_question varchar(255),
 	primary key (id)
 );
-create table question_answers
+create table question_question_answers
 (
 	question_id 	 int8 not null,
 	question_answers varchar(255)
@@ -53,5 +53,5 @@ create table usr
 );
 
 alter table if exists usr add constraint UK_dfui7gxngrgwn9ewee3ogtgym unique (username);
-alter table if exists question_answers add constraint FKj541towvheyqieeidw7a3ewxv foreign key (question_id) references question;
+alter table if exists question_question_answers add constraint FKj541towvheyqieeidw7a3ewxv foreign key (question_id) references question;
 alter table if exists user_role add constraint FKfpm8swft53ulq2hl11yplpr5 foreign key (user_id) references usr;

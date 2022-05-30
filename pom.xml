@@ -4,6 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
 		<jwt-version>0.11.2</jwt-version>
+		<springfox-swagger>3.0.0</springfox-swagger>
 	</properties>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -75,6 +76,16 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>io.swagger.core.v3</groupId>-->
+<!--			<artifactId>swagger-annotations</artifactId>-->
+<!--			<version>2.2.0</version>-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${springfox-swagger}</version>
+		</dependency>
+
 
 	</dependencies>
 

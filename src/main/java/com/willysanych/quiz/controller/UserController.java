@@ -11,18 +11,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
+    private final UserDetailServiceImpl userDetailService;
+
+    public UserController(AuthService authService, UserDetailServiceImpl userDetailService) {
+        this.authService = authService;
+        this.userDetailService = userDetailService;
+    }
 
     @PostMapping("/update-roles")
     public ResponseEntity updateRoles(@RequestBody RolesRequest rolesRequest) {

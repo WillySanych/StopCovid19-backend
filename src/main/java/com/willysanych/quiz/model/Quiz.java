@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,61 +19,13 @@ public class Quiz {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     @NotEmpty
     private String username;
 
-    @Column
     private Instant createdOn;
 
-    @Column
-    private String firstQuestion;
-
-    @Column
-    private String secondQuestion;
-
-    @Lob
-    @Column
-    private String thirdQuestion;
-
-    @Column
-    private String fourthQuestion;
-
-    @Column
-    private String fifthQuestion;
-
-    @Column
-    private String sixthQuestion;
-
-    @Column
-    private String seventhQuestion;
-
-    @Column
-    private String eighthQuestion;
-
-    @Column
-    private String ninthQuestion;
-
-    @Column
-    private String tenthQuestion;
-
-    @Lob
-    @Column
-    private String eleventhQuestion;
-
-    @Lob
-    @Column
-    private String twelfthQuestion;
-
-    @Column
-    private String thirteenthQuestion;
-
-    @Lob
-    @Column
-    private String fourteenthQuestion;
-
-    @Lob
-    @Column
-    private String fifteenthQuestion;
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "answers", joinColumns = @JoinColumn(name = "answer_id"))
+    private List<String> answers;
 
 }

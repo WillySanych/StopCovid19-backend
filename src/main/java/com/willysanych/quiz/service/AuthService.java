@@ -5,7 +5,6 @@ import com.willysanych.quiz.model.Role;
 import com.willysanych.quiz.model.User;
 import com.willysanych.quiz.repository.UserRepository;
 import com.willysanych.quiz.security.JwtProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,20 +22,23 @@ import java.util.Set;
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
+
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtProvider jwtProvider, RefreshTokenService refreshTokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
+        this.refreshTokenService = refreshTokenService;
+    }
 
     @Transactional
     public void signup(RegisterRequest registerRequest) {
@@ -55,6 +57,7 @@ public class AuthService {
         return passwordEncoder.encode(password);
     }
 
+    @Transactional
     public AuthenticationResponse login(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(),
@@ -81,11 +84,10 @@ public class AuthService {
         return Optional.of(principal);
     }
 
+    @Transactional
     public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
         String token = jwtProvider.generateTokenWithUsername(refreshTokenRequest.getUsername());
-        User user = userRepository.findByUsername(refreshTokenRequest.getUsername()).orElseThrow(()
-                -> new UsernameNotFoundException("No user found " + refreshTokenRequest.getUsername()));
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
@@ -94,6 +96,7 @@ public class AuthService {
                 .build();
     }
 
+    @Transactional
     public void updateRoles(RolesRequest rolesRequest) {
 
         String username = rolesRequest.getUsername();

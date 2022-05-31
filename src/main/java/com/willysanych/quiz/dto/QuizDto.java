@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,34 +16,6 @@ public class QuizDto {
 
     private Instant createdOn;
 
-    private String firstQuestion;
-
-    private String secondQuestion;
-
-    private String thirdQuestion;
-
-    private String fourthQuestion;
-
-    private String fifthQuestion;
-
-    private String sixthQuestion;
-
-    private String seventhQuestion;
-
-    private String eighthQuestion;
-
-    private String ninthQuestion;
-
-    private String tenthQuestion;
-
-    private String eleventhQuestion;
-
-    private String twelfthQuestion;
-
-    private String thirteenthQuestion;
-
-    private String fourteenthQuestion;
-
-    private String fifteenthQuestion;
+    private List<String> answers;
 
 }

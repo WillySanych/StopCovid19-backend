@@ -26,7 +26,7 @@ public class SwaggerConfig {
     private ApiInfo getApiInfo() {
         return new ApiInfoBuilder()
                 .title("Quiz App API")
-                .version("1.1.0")
+                .version("1.0.1")
                 .description("API for Quiz App backend")
                 .build();
     }

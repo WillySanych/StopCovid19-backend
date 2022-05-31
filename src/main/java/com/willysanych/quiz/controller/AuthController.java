@@ -1,9 +1,11 @@
 package com.willysanych.quiz.controller;
 
-import com.willysanych.quiz.dto.*;
+import com.willysanych.quiz.dto.AuthenticationResponse;
+import com.willysanych.quiz.dto.LoginRequest;
+import com.willysanych.quiz.dto.RefreshTokenRequest;
+import com.willysanych.quiz.dto.RegisterRequest;
 import com.willysanych.quiz.service.AuthService;
 import com.willysanych.quiz.service.RefreshTokenService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +19,14 @@ import javax.validation.Valid;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
+
+    public AuthController(AuthService authService, RefreshTokenService refreshTokenService) {
+        this.authService = authService;
+        this.refreshTokenService = refreshTokenService;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody RegisterRequest registerRequest) {

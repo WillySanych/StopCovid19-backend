@@ -3,7 +3,6 @@ package com.willysanych.quiz.controller;
 import com.willysanych.quiz.dto.QuizDto;
 import com.willysanych.quiz.model.Quiz;
 import com.willysanych.quiz.service.QuizService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/quizzes")
 public class QuizController {
 
-    @Autowired
-    private QuizService quizService;
+    private final QuizService quizService;
+
+    public QuizController(QuizService quizService) {
+        this.quizService = quizService;
+    }
 
     @PreAuthorize("hasAuthority('PATIENT')")
     @PostMapping
